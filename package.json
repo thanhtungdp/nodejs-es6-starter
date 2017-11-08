@@ -8,6 +8,7 @@
     "dev": "NODE_PATH=./src nodemon --exec babel-node src/app.js",
     "build": "babel src --out-dir dist",
     "start": "NODE_PATH=./src node bootstrap.js",
+    "test" : "mocha",
     "lint": "standard --verbose",
     "fixcode": "standard --fix",
     "precommit": "npm run lint"
@@ -27,13 +28,18 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "jsonwebtoken": "^8.1.0",
+    "mocha": "^4.0.1",
     "mongoose": "^4.10.7",
     "prettier": "^1.8.1",
     "standard": "^10.0.3"
   },
   "standard": {
+    "globals": [
+      "it",
+      "describe"
+    ],
     "rules": {
-      "space-before-function-paren" : 0
+      "space-before-function-paren": 0
     }
   }
 }
