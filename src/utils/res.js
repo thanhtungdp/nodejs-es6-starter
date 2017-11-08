@@ -1,3 +1,3 @@
-export function resError(res, messageError) {
-	res.json({error: true, message: messageError})
+export function resError (res, messageError) {
+  res.json({ error: true, message: messageError })
 }
