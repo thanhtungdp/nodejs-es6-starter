@@ -30,5 +30,10 @@
     "mongoose": "^4.10.7",
     "prettier": "^1.8.1",
     "standard": "^10.0.3"
+  },
+  "standard": {
+    "rules": {
+      "space-before-function-paren" : 0
+    }
   }
 }

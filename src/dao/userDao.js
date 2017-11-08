@@ -12,7 +12,7 @@ export default {
    * @returns {boolean}
    */
   async checkExistsByEmail (email) {
-    return !!(await User.findOne({ email }))
+    return !!await User.findOne({ email })
   },
 
   /**
