@@ -1,21 +1,54 @@
-import User from "../models/User";
-import express from "express";
+import express from 'express'
 
-var router = express.Router();
+import authMiddleware from 'middlewares/authMiddleware'
+import Errors from 'constants/errors'
+import userDao from 'dao/userDao'
+import { resError } from 'utils/res'
 
-router.get('/register',async (req, res) => {
-  let user = new User({
-    email: 'tungptkh@gmail.com',
-    username: 'thanhtungdp'
-  });
-  try{
-  user = await user.save();
-  console.log(user);
-  res.json({user});
+var router = express.Router()
+
+/**
+ * Register
+ * @param body: email, password
+ */
+router.post('/register', async (req, res) => {
+  const userIsExists = await userDao.checkExistsByEmail(req.body.email)
+  if (userIsExists) {
+    resError(Errors.USER_REGISTER_EXISTS)
   }
-  catch(e){
-    console.log(e);
+  let userData = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  const userCreate = await userDao.register(userData)
+  res.json({ success: true, data: userCreate })
+})
+
+/**
+ * Login
+ * @param body: email, password
+ */
+router.post('/login', async (req, res) => {
+  let user = await userDao.login({
+    email: req.body.email,
+    password: req.body.password
+  })
+  if (!user) {
+    resError(Errors.USER_PASSWORD_INCORRECT)
+  } else {
+    res.json({
+      success: true,
+      token: userDao.createToken(user),
+      data: user
+    })
   }
 })
 
-export default router;
+/**
+ * Protected route by **authMiddlware**, require req must have header Authoraization
+ */
+router.get('/me', authMiddleware, async (req, res) => {
+  res.json({ data: req.user })
+})
+
+export default router

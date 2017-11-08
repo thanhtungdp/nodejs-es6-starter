@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec babel-node src/app.js",
-    "prestart": "babel src --out-dir dist",
-    "start": "npm run prestart && node bootstrap.js"
+    "dev": "NODE_PATH=./src nodemon --exec babel-node src/app.js",
+    "build": "babel src --out-dir dist",
+    "start": "NODE_PATH=./src node bootstrap.js"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
@@ -19,9 +19,10 @@
     "nodemon": "^1.9.2"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "jsonwebtoken": "^7.4.1",
+    "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.10.7"
   }
 }
