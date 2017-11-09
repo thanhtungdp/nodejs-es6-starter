@@ -16,6 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }))
 app.use(bodyParser.json())
 
 // Routes
+app.get('/', (req, res) => {
+  res.json({message: 'Hello world'})
+})
 app.use('/auth', authRoute)
 
 app.listen(config.PORT, () => {

@@ -8,17 +8,21 @@ function getAuthorizationToken (req) {
 
 export default async function authMiddleware (req, res, next) {
   let authToken = getAuthorizationToken(req)
-  if (authToken) {
-    const user = await userDao.getUserFromToken(authToken)
-    if (!user) {
-      resError(res, Errors.NOT_AUTHENTICATED)
+  try {
+    if (authToken) {
+      const user = await userDao.getUserFromToken(authToken)
+      if (!user) {
+        resError(res, Errors.NOT_AUTHENTICATED)
+      } else {
+        // If user login, append `user` to req
+        req.user = user
+        next()
+      }
     } else {
-      // If user login, append `user` to req
-      req.user = user
-      next()
+      resError(res, Errors.NOT_AUTHENTICATED)
     }
-  } else {
-    resError(res, Errors.NOT_AUTHENTICATED)
+    next()
+  } catch (e) {
+    console.log(e)
   }
-  next()
 }
