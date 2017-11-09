@@ -25,7 +25,7 @@ module.exports = {
   deploy: {
     production: {
       user: 'root', // user
-      host: '128.199.127.230', // ip
+      host: '45.76.190.175 ', // ip
       ref: 'origin/release', // branch được config để chạy production
       repo: 'git@gitlab.com:thanhtungdp/auth-api.git', // git
       path: '/data/pm2/vietan_auth_api',
