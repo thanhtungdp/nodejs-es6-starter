@@ -4,14 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "dev": "NODE_PATH=./src nodemon --exec babel-node src/app.js",
     "build": "babel src --out-dir dist",
     "start": "NODE_PATH=./src node bootstrap.js",
-    "test" : "mocha",
     "lint": "standard --verbose",
     "fixcode": "standard --fix",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "deploy-setup": "pm2 deploy ecosystem.config.js setup",
+    "deploy": "pm2 deploy ecosystem.config.js production"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
@@ -30,6 +31,7 @@
     "jsonwebtoken": "^8.1.0",
     "mocha": "^4.0.1",
     "mongoose": "^4.10.7",
+    "pm2": "^2.7.2",
     "prettier": "^1.8.1",
     "standard": "^10.0.3"
   },
