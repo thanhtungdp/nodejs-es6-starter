@@ -27,7 +27,7 @@ module.exports = {
       user: 'root', // user
       host: '128.199.127.230', // ip
       ref: 'origin/release', // branch được config để chạy production
-      repo: 'git@gitlab.com:tungtung-dev/react-quiz-nextjs.git', // git
+      repo: 'git@gitlab.com:thanhtungdp/auth-api.git', // git
       path: '/data/pm2/vietan_auth_api',
       'post-deploy': 'yarn install && yarn build && pm2 reload ecosystem.config.js --env production'
     }
