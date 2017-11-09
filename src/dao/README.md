@@ -1,3 +1,15 @@
+# Dao
+
+Dao (Database access orm) là 1 file chứa các phương thức tương tác với cơ sở dữ liệu.
+
+Ví dụ, 1 user sẽ có các phương thức sau
+
+* Register
+* Login
+* CheckUserEmmail
+
+Code:
+```javascript
 import User from 'models/User'
 import bcrypt from 'bcrypt'
 import jsonWebToken from 'jsonwebtoken'
@@ -70,3 +82,24 @@ export default {
     }
   }
 }
+
+
+// file routes/authRoute
+import userDao from 'dao/userDao'
+router.post('/login', async (req, res) => {
+  let user = await userDao.login({
+    email: req.body.email,
+    password: req.body.password
+  })
+  if (!user) {
+    resError(Errors.USER_PASSWORD_INCORRECT)
+  } else {
+    res.json({
+      success: true,
+      token: userDao.createToken(user),
+      data: user
+    })
+  }
+})
+
+```
