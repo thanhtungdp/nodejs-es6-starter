@@ -14,7 +14,7 @@ var router = express.Router()
 router.post('/register', async (req, res) => {
   const userIsExists = await userDao.checkExistsByEmail(req.body.email)
   if (userIsExists) {
-    resError(Errors.USER_REGISTER_EXISTS)
+    resError(res, Errors.USER_REGISTER_EXISTS)
   }
   let userData = {
     email: req.body.email,
@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
     password: req.body.password
   })
   if (!user) {
-    resError(Errors.USER_PASSWORD_INCORRECT)
+    resError(res, Errors.USER_PASSWORD_INCORRECT)
   } else {
     res.json({
       success: true,
