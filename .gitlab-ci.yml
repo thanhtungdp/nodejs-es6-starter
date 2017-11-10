@@ -1,0 +1,18 @@
+image: node:6.9.4
+
+before_script:
+  - apt-get update && apt-get install git
+  - npm install -g pm2
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - echo $SSH_PRIVATE_KEY
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+testnodejs:
+  script:
+    - npm install pm2
+    - npm run deploy-setup
+    - npm run deploy
+    - echo "Completed to deploy automatic"
