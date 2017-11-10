@@ -13,6 +13,5 @@ before_script:
 testnodejs:
   script:
     - npm install pm2
-    - npm run deploy-setup
     - npm run deploy
     - echo "Completed to deploy automatic"
