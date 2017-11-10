@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 
 // Routes
 app.get('/', (req, res) => {
-  res.json({message: 'Hello world 23'})
+  res.json({message: 'Hello world 23456'})
 })
 app.use('/auth', authRoute)
 
