@@ -15,9 +15,39 @@ mongoose.connect(config.MONGODB_OPTIONS.database)
 app.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }))
 app.use(bodyParser.json())
 
+// Accept header
+
+app.use(function (req, res, next) {
+  // TODO Need to define allowed domain
+  // Website you wish to allow to connect
+  if (app.get('env') === 'development') {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+  }
+
+  // Request methods you wish to allow
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  )
+
+  // Request headers you wish to allow
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type, Cache-Control, Authorization'
+  )
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true)
+
+  next()
+})
+
 // Routes
 app.get('/', (req, res) => {
-  res.json({message: 'Hello world 23'})
+  res.json({ message: 'Hello world 23' })
 })
 app.use('/auth', authRoute)
 
