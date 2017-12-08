@@ -47,7 +47,7 @@ app.use(function (req, res, next) {
 
 // Routes
 app.get('/', (req, res) => {
-  res.json({ message: 'Hello world 23' })
+  res.json({ message: 'Welcome to swm-log-api' })
 })
 app.use('/auth', authRoute)
 
