@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 
 import config from 'config'
 import authRoute from 'routes/authRoute'
+import paymentCardMobileRoute from 'routes/paymentCardMobileRoute'
 
 // Init app express
 const app = express()
@@ -50,6 +51,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to swm-log-api' })
 })
 app.use('/auth', authRoute)
+app.use('/card-mobile', paymentCardMobileRoute)
 
 app.listen(config.PORT, () => {
   console.log(`start server on ${config.PORT}`)
