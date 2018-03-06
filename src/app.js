@@ -3,14 +3,18 @@ import express from 'express'
 import mongoose from 'mongoose'
 
 import config from 'config'
-import authRoute from 'routes/authRoute'
 import paymentCardMobileRoute from 'routes/paymentCardMobileRoute'
+import paymentCardBankRoute from 'routes/paymentCardBankRoute'
+import authMiddleware from 'middlewares/authMiddleware'
 
 // Init app express
 const app = express()
 
 // Connect mongodb
-mongoose.connect(config.MONGODB_OPTIONS.database)
+mongoose.connect(
+  config.MONGODB_OPTIONS.database,
+  config.MONGODB_OPTIONS.dbOptions
+)
 
 // Setup bodyparser
 app.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }))
@@ -50,8 +54,9 @@ app.use(function (req, res, next) {
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to swm-log-api' })
 })
-app.use('/auth', authRoute)
-app.use('/card-mobile', paymentCardMobileRoute)
+
+app.use('/card-mobile', authMiddleware, paymentCardMobileRoute)
+app.use('/card-bank', paymentCardBankRoute)
 
 app.listen(config.PORT, () => {
   console.log(`start server on ${config.PORT}`)

@@ -2,6 +2,7 @@ import queryString from 'query-string'
 import axios from 'axios/index'
 import { PAYMENT_API } from 'config'
 import Errors from 'constants/errors'
+import md5 from 'md5'
 
 const { PAYMENT } = Errors
 
@@ -91,10 +92,13 @@ export default {
    * @returns {*}
    */
   getFormSubmit ({ code, serial, cardType, user }) {
+    const {merchantId, merchantAccount, merchantPassword} = PAYMENT_API.merchant
     return queryString.stringify({
       func: 'CardCharge',
       version: '2.0',
-      ...PAYMENT_API.merchant,
+      merchant_id: merchantId,
+      merchant_account: merchantAccount,
+      merchant_password: md5(`${merchantId}|${merchantPassword}`),
       pin_card: code,
       card_serial: serial,
       type_card: cardType,
@@ -150,7 +154,7 @@ export default {
    * @param user
    * @returns {Promise<void>}
    */
-  async submitCardMobile ({ code, serial, cardType, user }) {
+  async submit ({ code, serial, cardType, user }) {
     const response = this.cleanResponse(
       await this.sendData({ code, serial, cardType, user })
     )

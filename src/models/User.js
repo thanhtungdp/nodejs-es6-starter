@@ -1,11 +1,17 @@
-import mongoose from 'mongoose'
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
-const User = new mongoose.Schema({
-  email: String,
-  role: { type: String, default: 'user' },
-  password: String,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+var UserSchema = new Schema({
+  coin: {
+    gold: { type: Number, default: 0 },
+    diamond: { type: Number, default: 0 }
+  }
 })
 
-export default mongoose.model('User', User)
+UserSchema.virtual('id').get(function () {
+  return this._id
+})
+
+UserSchema.set('toJSON', { virtuals: true })
+
+export default mongoose.model('user', UserSchema)

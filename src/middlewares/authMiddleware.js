@@ -1,28 +1,38 @@
-import userDao from 'dao/userDao'
-import Errors from 'constants/errors'
-import { resError } from 'utils/res'
+import fetch from 'node-fetch'
+import config from 'config'
 
-function getAuthorizationToken (req) {
-  return req.headers['authorization'] || req.query.token || req.body.token
-}
-
-export default async function authMiddleware (req, res, next) {
-  let authToken = getAuthorizationToken(req)
-  try {
-    if (authToken) {
-      const user = await userDao.getUserFromToken(authToken)
-      if (!user) {
-        resError(res, Errors.NOT_AUTHENTICATED)
-      } else {
-        // If user login, append `user` to req
-        req.user = user
-        next()
+var authMiddleware = function (req, res, next) {
+  var token =
+    req.body.token ||
+    req.query.token ||
+    req.headers['x-access-token'] ||
+    req.headers['authorization']
+  if (token) {
+    fetch(config.AUTH_API + '/auth/me', {
+      headers: {
+        Authorization: req.headers['authorization']
       }
-    } else {
-      resError(res, Errors.NOT_AUTHENTICATED)
-    }
-    next()
-  } catch (e) {
-    console.log(e)
+    })
+      .then(function (data) {
+        return data.json()
+      })
+      .then(function (data) {
+        if (data && data.success) {
+          req.user = data.data
+          next()
+        } else {
+          res.json({ success: false, message: 'Login error' })
+        }
+      })
+      .catch(function (error) {
+        res.json({ success: false, message: error.message })
+      })
+  } else {
+    return res.status(403).send({
+      success: false,
+      message: 'No token provied'
+    })
   }
 }
+
+export default authMiddleware
